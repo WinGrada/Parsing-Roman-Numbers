@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Parsing_Roman_Numbers
 {
@@ -19,43 +18,76 @@ namespace Parsing_Roman_Numbers
                 ['M'] = 1000
             };
 
+            var test = ConvertStrToList(tableNums, "MMMMMCMXCIX");
+
+            Console.WriteLine("Result CANF");
+            Console.WriteLine(ConvertListNumsToNumByRomanRules(test));
 
         }
-        static int CollectArabicNumbers()
+        /* ==========================================================================================
+         *                  Конвертировать строку в список.
+         * ==========================================================================================
+         * GetListOfNums
+         * 
+         * 
+        */
+        static List<int> ConvertStrToList(Dictionary<char, int> tableNums, string romanNums)
         {
-            // TODO: Написать функцию которая соберает результат конвертации римских чисел.
-            return default;
+            var listOfNums = new List<int>();
+            int arabicNum = 0;
+
+            foreach(char romanSym in romanNums)
+            {
+                arabicNum = ConvertRomanNumToArabiсNum(tableNums, romanSym);
+                listOfNums.Add(arabicNum);
+            }
+
+            return listOfNums;
         }
 
-        static List<int> GetArabicNums()
+        /* ==========================================================================================
+         *                  Соберает Арабское число из массива чисел.
+         * ==========================================================================================
+         * ConvertListNumsToNumByRomanRules
+         * 
+         * На вход получает массив чисел, из массива чисел соберает число по правилам римских чисел.
+         * - если большое число стоит перед меньшей, то они складываются (принцип сложения),
+         * - если меньшее число стоит перед большей, то меньшая вычитается из большей (принцип вычитания).
+        */
+
+        static int ConvertListNumsToNumByRomanRules(List<int> nums)
         {
-            // TODO: Написать функицю которая используя  ConvertRomanNumsToArabiсNums и
-            //  RecognizeRomansNums получает список арабских чисел.
-            return default;
+            int result = 0;
+            int sizeList = nums.Count;
+
+            for (int i = 0; i < sizeList; i++)
+            {
+                //-----> Принцип вычитания римских чисел.
+                if (((i + 1) != sizeList) && nums[i] < nums[i + 1])
+                {
+                    result += (nums[i + 1] - nums[i]);
+                    i++;
+                }
+                else
+                {
+                    //-----> Принцип сложения римских чисел
+                    result += nums[i];
+                }
+            }
+            return result;
         }
 
-        static string RecognizeRomansNums(string romanNums)
-        {
-            // TODO: Написать функцию которая обнаруживает римское число и возвращает его.
-            return default;
-        }
+        //static string ValidateRomanNum
 
         /* ==========================================================================================
          *                  Конвертировать римские числа в арабские числа
          * ==========================================================================================
         */
-        static int ConvertRomanNumsToArabiсNums(Dictionary<char, int> tableNums, string romanNums)
+        static int ConvertRomanNumToArabiсNum(Dictionary<char, int> tableNums, char romanNum)
         {
-            // TODO: написать функцию которая берет римское число и конвертирует его в арабское.
-            return default;
+            return tableNums[romanNum];
         }
 
-        static bool CompareNumbers(int arabianNumbers, int romanNumbers)
-        {
-            // TODO: Реализовать сравнение.
-            return false;
-        }
-       
 
 
     }
