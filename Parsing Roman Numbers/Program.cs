@@ -8,7 +8,7 @@ namespace Parsing_Roman_Numbers
     {
         static void Main(string[] args)
         {
-            var tableNums = new Dictionary<char, int>()
+            var romanToInt = new Dictionary<char, int>()
             {
                 ['I'] = 1,
                 ['V'] = 5,
@@ -18,12 +18,9 @@ namespace Parsing_Roman_Numbers
                 ['D'] = 500,
                 ['M'] = 1000
             };
-            
-            var test = ConvertStrToList(tableNums, "MMMMMCMXCIX");
+            char[] tableRomanNums = new char[7] { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
 
-
-            Console.WriteLine(IsJustRomanNums("MMMCXIX"));
-
+            Console.WriteLine(IsJustRomanNums(tableRomanNums, "XMMVII"));
 
         }
         /* ==========================================================================================
@@ -102,23 +99,14 @@ namespace Parsing_Roman_Numbers
          *  Использует переменные:
          *                          str - строка которая содержит римские числа.
         */
-        static bool IsJustRomanNums(string str)
+        static bool IsJustRomanNums(char[] tableRomanNums, string inputStr)
         {
-            char[] tableRomanNums = new char[7] { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
-            int sizeArr = tableRomanNums.Length;
-            int sizeStr = str.Length;
-            int cntCoincidences = 0;
-
-            foreach (var symbol in str)
+            foreach (var symbol in inputStr)
             {
-                for (int i = 0; i < sizeArr; i++)
-                {
-                    if (symbol == tableRomanNums[i]) cntCoincidences++;
-                }
+                if ( !(Array.Exists(tableRomanNums, element => element == symbol)) )
+                    return false;
             }
-            if (cntCoincidences == sizeStr) return true;
-
-            return false;
+            return true;
         }
 
     }
