@@ -1,6 +1,11 @@
-﻿using System;
+﻿/* Программа конвертирует Римские числа в int 
+ * Пример: XCI -> 91
+ * 
+ * Исключение: Программа не учитывает l за римское число 1(I)
+*/
+
+using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Parsing_Roman_Numbers
 {
@@ -20,24 +25,47 @@ namespace Parsing_Roman_Numbers
             };
             char[] tableRomanNums = new char[7] { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
 
-            Console.WriteLine(IsJustRomanNums(tableRomanNums, "XMMVII"));
+            string userRomanNums = Console.ReadLine();
+            userRomanNums = userRomanNums.ToUpper();
 
+            int arabicNum = default; 
+
+            //-----> Выполнение программы.
+            if (IsJustRomanNums(tableRomanNums, userRomanNums))
+            {
+                var listIntNums = ConvertRomanStrToListInt(romanToInt, userRomanNums);
+
+                arabicNum = ConvertRomanListToInt(listIntNums);
+            }
+
+            Console.WriteLine($"Result Convert: {arabicNum}");
+
+            
         }
         /* ==========================================================================================
          *                  Конвертировать строку в список.
          * ==========================================================================================
-         * GetListOfNums
+         * ConvertRomanStrToListInt
          * 
+         * На вход получает словарь(ключ = римское число, значение = Int) и строку римских чисел,
+         *  Далее создается цикл, в цикле вызывается функция конвертации римского числа в int,
+         *  каждый результат в цикле записывается в список. в Конце возвращает сформированный список.
+         *  
+         * Использует функции:
+         *                  ConvertRomanToInt
          * 
+         * Использует переменные:
+         *                  romanToInt - словарь, где ключ римское число, а значение = int
+         *                  romanNums - строка с римскими числами.
         */
-        static List<int> ConvertStrToList(Dictionary<char, int> tableNums, string romanNums)
+        static List<int> ConvertRomanStrToListInt(Dictionary<char, int> romanToInt, string romanNums)
         {
             var listOfNums = new List<int>();
             int arabicNum = 0;
 
             foreach (char romanSym in romanNums)
             {
-                arabicNum = ConvertRomanNumToArabiсNum(tableNums, romanSym);
+                arabicNum = ConvertRomanToInt(romanToInt, romanSym);
                 listOfNums.Add(arabicNum);
             }
 
@@ -47,14 +75,17 @@ namespace Parsing_Roman_Numbers
         /* ==========================================================================================
          *                  Соберает Арабское число из массива чисел.
          * ==========================================================================================
-         * ConvertListNumsToNumByRomanRules
+         * ConvertRomanListToInt
          * 
          * На вход получает массив чисел, из массива чисел соберает число по правилам римских чисел.
          * - если большое число стоит перед меньшей, то они складываются (принцип сложения),
          * - если меньшее число стоит перед большей, то меньшая вычитается из большей (принцип вычитания).
+         * Возвращает результат конвертации.
+         * 
+         * Использует переменные:
+         *              nums - список с целыми числами.
         */
-
-        static int ConvertListNumsToNumByRomanRules(List<int> nums)
+        static int ConvertRomanListToInt(List<int> nums)
         {
             int result = 0;
             int sizeList = nums.Count;
@@ -76,14 +107,21 @@ namespace Parsing_Roman_Numbers
             return result;
         }
 
-
         /* ==========================================================================================
          *                  Конвертировать римские числа в арабские числа
          * ==========================================================================================
+         * ConvertRomanToInt
+         * 
+         * На входе получает словарь (где ключ = римский символ, а значение = int) и римский символ.
+         *  Конвертирует римский символ в int, используя римский символ как ключ для словаря.
+         *  
+         *  Использует переменные:
+         *                  romantToInt
+         *                  romanNum
         */
-        static int ConvertRomanNumToArabiсNum(Dictionary<char, int> tableNums, char romanNum)
+        static int ConvertRomanToInt(Dictionary<char, int> romanToInt, char romanNum)
         {
-            return tableNums[romanNum];
+            return romanToInt[romanNum];
         }
 
         /* ==========================================================================================
@@ -91,12 +129,13 @@ namespace Parsing_Roman_Numbers
          * ==========================================================================================
          * IsJustRomanNums
          * 
-         * На входе получает строку, которую прогоняет через циклы, в котором каждый символ проверяется
-         *  на принадлежность римским числам, если символ принадлежит римскому числу, засчитывает 
-         *  совпадение. В конце проверяет кол-во совпадений на размер входной строки, если эти значения
-         *  равны. вернет TRUE, иначе вернут FALSE
+         * На входе получает массив таблицы римских чисел и входную строку. Далее через цикл foreach
+         *  проверяет, есть ли X символ строки в таблице римских чисел. Если нету прерывает цикл и 
+         *  возвращает False. Иначе True.
          *  
          *  Использует переменные:
+         *                          tableRomanNums = массив римских чисел
+         *                                           {'I', 'V', 'X', 'L', 'C', 'D', 'M'}
          *                          str - строка которая содержит римские числа.
         */
         static bool IsJustRomanNums(char[] tableRomanNums, string inputStr)
