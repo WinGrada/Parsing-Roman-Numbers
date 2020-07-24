@@ -38,10 +38,9 @@ namespace Parsing_Roman_Numbers
                 arabicNum = ConvertRomanListToInt(listIntNums);
             }
 
-            Console.WriteLine($"Result Convert: {arabicNum}");
-
-            
+            Console.WriteLine($"Result Convert: {arabicNum}");  
         }
+
         /* ==========================================================================================
          *                  Конвертировать строку в список.
          * ==========================================================================================
@@ -65,7 +64,7 @@ namespace Parsing_Roman_Numbers
 
             foreach (char romanSym in romanNums)
             {
-                arabicNum = ConvertRomanToInt(romanToInt, romanSym);
+                arabicNum = romanToInt[romanSym];
                 listOfNums.Add(arabicNum);
             }
 
@@ -108,23 +107,6 @@ namespace Parsing_Roman_Numbers
         }
 
         /* ==========================================================================================
-         *                  Конвертировать римские числа в арабские числа
-         * ==========================================================================================
-         * ConvertRomanToInt
-         * 
-         * На входе получает словарь (где ключ = римский символ, а значение = int) и римский символ.
-         *  Конвертирует римский символ в int, используя римский символ как ключ для словаря.
-         *  
-         *  Использует переменные:
-         *                  romantToInt
-         *                  romanNum
-        */
-        static int ConvertRomanToInt(Dictionary<char, int> romanToInt, char romanNum)
-        {
-            return romanToInt[romanNum];
-        }
-
-        /* ==========================================================================================
          *                  Это только Римские числа?
          * ==========================================================================================
          * IsJustRomanNums
@@ -147,6 +129,5 @@ namespace Parsing_Roman_Numbers
             }
             return true;
         }
-
     }
 }
