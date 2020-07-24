@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Parsing_Roman_Numbers
 {
@@ -17,11 +18,12 @@ namespace Parsing_Roman_Numbers
                 ['D'] = 500,
                 ['M'] = 1000
             };
-
+            
             var test = ConvertStrToList(tableNums, "MMMMMCMXCIX");
 
-            Console.WriteLine("Result CANF");
-            Console.WriteLine(ConvertListNumsToNumByRomanRules(test));
+
+            Console.WriteLine(IsJustRomanNums("MMMCXIX"));
+
 
         }
         /* ==========================================================================================
@@ -36,7 +38,7 @@ namespace Parsing_Roman_Numbers
             var listOfNums = new List<int>();
             int arabicNum = 0;
 
-            foreach(char romanSym in romanNums)
+            foreach (char romanSym in romanNums)
             {
                 arabicNum = ConvertRomanNumToArabiсNum(tableNums, romanSym);
                 listOfNums.Add(arabicNum);
@@ -77,7 +79,6 @@ namespace Parsing_Roman_Numbers
             return result;
         }
 
-        //static string ValidateRomanNum
 
         /* ==========================================================================================
          *                  Конвертировать римские числа в арабские числа
@@ -88,7 +89,37 @@ namespace Parsing_Roman_Numbers
             return tableNums[romanNum];
         }
 
+        /* ==========================================================================================
+         *                  Это только Римские числа?
+         * ==========================================================================================
+         * IsJustRomanNums
+         * 
+         * На входе получает строку, которую прогоняет через циклы, в котором каждый символ проверяется
+         *  на принадлежность римским числам, если символ принадлежит римскому числу, засчитывает 
+         *  совпадение. В конце проверяет кол-во совпадений на размер входной строки, если эти значения
+         *  равны. вернет TRUE, иначе вернут FALSE
+         *  
+         *  Использует переменные:
+         *                          str - строка которая содержит римские числа.
+        */
+        static bool IsJustRomanNums(string str)
+        {
+            char[] tableRomanNums = new char[7] { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
+            int sizeArr = tableRomanNums.Length;
+            int sizeStr = str.Length;
+            int cntCoincidences = 0;
 
+            foreach (var symbol in str)
+            {
+                for (int i = 0; i < sizeArr; i++)
+                {
+                    if (symbol == tableRomanNums[i]) cntCoincidences++;
+                }
+            }
+            if (cntCoincidences == sizeStr) return true;
+
+            return false;
+        }
 
     }
 }
